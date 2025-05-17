@@ -10,6 +10,10 @@ def success():
         return redirect(url_for('index'))
     return render_template('success.html', email=email)
 
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
 @app.route('/remove_me', methods=['POST'])
 def remove_me():
     email = session.get('user_email')
