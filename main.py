@@ -9,6 +9,12 @@ from routes.user_routes import *
 from routes.admin_routes import *
 from utils.sync_worker import background_sync_users
 
+credentials_path = "credentials.json"
+if not os.path.exists(credentials_path):
+    creds_json = os.environ.get("GOOGLE_CREDENTIALS_JSON")
+    if creds_json:
+        with open(credentials_path, "w") as f:
+            f.write(creds_json)
 if __name__ == '__main__':
     logging.basicConfig(
         level=logging.INFO,
