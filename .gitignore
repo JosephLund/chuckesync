@@ -31,3 +31,5 @@ Thumbs.db
 
 # Render logs (optional)
 *.log
+
+*.pickle
