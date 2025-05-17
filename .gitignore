@@ -1,0 +1,33 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# VS Code config
+.vscode/
+
+# Environment files
+.env
+*.env
+
+# Credentials
+credentials.json
+
+# SQLite DB (optional if you're testing locally and want it ignored)
+*.db
+
+# Flask session cache
+instance/
+*.log
+
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Render logs (optional)
+*.log
