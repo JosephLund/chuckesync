@@ -33,4 +33,4 @@ Thumbs.db
 *.log
 
 *.pickle
-uploads/
+*.pdf
