@@ -1,0 +1,58 @@
+#privacy-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff3f8;
+}
+
+#privacy-page .hero {
+  background: linear-gradient(to bottom right, #6c2d91, #8d3dbf);
+  color: white;
+  text-align: center;
+  padding: 4rem 2rem 2rem 2rem;
+}
+
+#privacy-page .hero h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+#privacy-page .subheading {
+  font-size: 1.25rem;
+  opacity: 0.9;
+}
+
+#privacy-page .content-card {
+  background: #ffffff;
+  border-radius: 12px;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem 3rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.08);
+}
+
+#privacy-page .content-card h2 {
+  color: #6c2d91;
+  margin-top: 2rem;
+}
+
+#privacy-page .content-card a {
+  color: #6c2d91;
+  text-decoration: underline;
+}
+
+#privacy-page .back-btn {
+  margin-bottom: 1rem;
+}
+#privacy-page .back-link {
+  display: inline-block;
+  color: #6c2d91;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 1rem;
+}
+
+#privacy-page .back-link:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,49 @@
+#index-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#index-page .hero {
+  background: linear-gradient(to bottom right, #6c2d91, #8d3dbf);
+  color: white;
+  text-align: center;
+  padding: 5rem 2rem 3rem 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#index-page .logo-img {
+  height: 100px;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
+}
+
+#index-page h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+#index-page p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+#index-page .main-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#index-page .btn-primary {
+  background-color: #ec1c24;
+  border-color: #ec1c24;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+}

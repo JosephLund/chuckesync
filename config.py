@@ -1,13 +1,9 @@
 import os
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'development-key'
-
-    # Database config (SQLite for now)
-    DATABASE_URI = 'sqlite:///chuckesync.db'
-
-    # OAuth credentials
-    GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
-    GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
-
-    # You can also later add Apple keys, email, etc.
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev_key'
+    GOOGLE_CLIENT_SECRET_FILE = 'credentials.json'
+    GOOGLE_SCOPES = [
+        'https://www.googleapis.com/auth/gmail.readonly',
+        'https://www.googleapis.com/auth/calendar'
+    ]

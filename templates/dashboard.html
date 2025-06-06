@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Chuck E Sync{% endblock %}
+
+{% block extra_css %}
+  <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div id="dashboard-page">
+
+  <section class="hero">
+    <h1>You're all set!</h1>
+    <p>Your shifts will now sync automatically with Google Calendar.</p>
+  </section>
+
+  <section class="main-content">
+    <div class="button-group">  
+      <form method="post" action="/clear_user/{{ session.get('user_email') }}" 
+            onsubmit="return confirm('Are you sure you want to remove yourself from Chuck E Sync?');">
+        <button class="btn btn-danger">Remove Me from Sync</button>
+      </form>
+
+      {% if session.get('is_admin') %}
+      <a class="btn btn-outline-dark" href="/admin">Go to Admin Panel</a>
+      {% endif %}
+    </div>
+  </section>
+
+</div>
+{% endblock %}

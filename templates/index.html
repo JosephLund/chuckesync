@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Chuck E Sync{% endblock %}
+
+{% block extra_css %}
+  <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div id="index-page">
+  <section class="hero">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Chuck E Sync Logo" class="logo-img">
+    <h1>Give us your shifts and we’ll give you your schedule.</h1>
+    <p>Automatically sync your Chuck E. Cheese shifts to your Calendar.</p>
+    <div class="main-actions">
+      <a class="btn btn-primary btn-lg" href="/login">Login with Google</a>
+      {% if session.get('is_admin') %}
+      <a class="btn btn-outline-light btn-lg" href="/admin">Admin Panel</a>
+      {% endif %}
+    </div>
+  </section>
+</div>
+{% endblock %}

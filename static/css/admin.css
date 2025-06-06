@@ -1,0 +1,87 @@
+#admin-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff3f8;
+}
+
+.admin-card {
+  background: #ffffff;
+  border-radius: 12px;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem 3rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+}
+
+.admin-card h1 {
+  color: #6c2d91;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.back-link {
+  display: inline-block;
+  color: #6c2d91;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 1rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.user-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.user-email {
+  font-weight: 600;
+}
+
+.user-actions form,
+.user-actions a {
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+.user-actions .btn {
+  font-size: 0.9rem;
+}
+
+.log-container {
+  background: #000;
+  color: #fff;
+  font-family: monospace;
+  padding: 1rem;
+  border-top: 1px solid #333;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: auto;
+}
+
+.command-bar {
+  background: #111;
+  padding: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  border-top: 1px solid #333;
+}
+
+.command-bar input {
+  flex: 1;
+  padding: 0.5rem;
+  font-family: monospace;
+  font-size: 1rem;
+  background-color: #222;
+  color: #0f0;
+  border: 1px solid #444;
+}

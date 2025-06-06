@@ -1,0 +1,40 @@
+#dashboard-page {
+  font-family: 'Open Sans', sans-serif;
+  background: #fff3f8;
+  margin: 0;
+}
+
+#dashboard-page .hero {
+  background: linear-gradient(to bottom right, #6c2d91, #8d3dbf);
+  color: white;
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+#dashboard-page .hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+#dashboard-page .main-content {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+#dashboard-page .button-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+#dashboard-page .button-group form,
+#dashboard-page .button-group a {
+  display: inline-block;
+}
+
+#dashboard-page .button-group .btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Chuck E Sync{% endblock %}</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body class="layout">
+  <header>
+    <div class="d-flex align-items-center">
+      <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Chuck E Sync Logo" style="height: 32px; margin-right: 10px;">
+      <span class="logo-text">Chuck E Sync</span>
+    </div>
+    {% if session.get('user_email') %}
+    <form method="post" action="/logout">
+      <button class="btn btn-outline-light">Logout</button>
+    </form>
+    {% endif %}
+  </header>
+
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    © 2025 Chuck E Sync. All rights reserved.
+    <a href="{{ url_for('main.privacy') }}">Privacy Policy</a>
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
