@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, current_app, session, redirect, url_for, request, Response
 from flask_sqlalchemy import SQLAlchemy
 import backend
@@ -53,7 +54,6 @@ def seed_test_users():
         if not user:
             new_user = User(email=email, is_admin=False)
             db.session.add(new_user)
-            print(json.dumps(new_user.to_dict(), indent=4))
 
     db.session.commit()
     return "Test users inserted!"

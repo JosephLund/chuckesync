@@ -8,9 +8,9 @@
 .admin-card {
   background: #ffffff;
   border-radius: 12px;
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 2rem 3rem;
+  max-width: 100%;
+  width: 100%;
+  padding: 2rem 1.5rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -51,6 +51,11 @@
   margin-bottom: 0.5rem;
 }
 
+
+.user-meta .badge {
+  margin-left: 0.5rem;
+}
+
 .user-actions {
   display: flex;
   flex-wrap: wrap;
@@ -68,15 +73,59 @@
   font-size: 0.9rem;
 }
 
-.log-container {
+.log-section-wrapper {
+  margin-top: auto;
   background: #000;
   color: #fff;
   font-family: monospace;
-  padding: 1rem;
   border-top: 1px solid #333;
+  transition: all 0.3s ease;
+}
+
+.log-container {
   max-height: 300px;
   overflow-y: auto;
-  margin-top: auto;
+  padding: 1rem;
+}
+
+.command-bar {
+  background: #111;
+  padding: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  border-top: 1px solid #333;
+}
+
+.command-bar input {
+  flex: 1;
+  padding: 0.5rem;
+  font-family: monospace;
+  font-size: 1rem;
+  background-color: #222;
+  color: #0f0;
+  border: 1px solid #444;
+}
+
+/* Fullscreen styles */
+.log-section-wrapper.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.log-section-wrapper.fullscreen .log-container {
+  flex: 1;
+  max-height: none;
+  overflow-y: auto;
+}
+
+.log-section-wrapper.fullscreen .command-bar {
+  border-top: 1px solid #333;
 }
 
 .command-bar {

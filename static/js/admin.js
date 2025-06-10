@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function showUserInfo(user) {
+  console.log("Received user info:", user);
+  var  user = JSON.parse(user);
+  console.log("Showing user info:", user);
   const modal = document.getElementById("user-info-modal");
   const tableBody = document.getElementById("user-info-table");
   const emailTitle = document.getElementById("modal-user-email");
@@ -57,4 +60,11 @@ function showUserInfo(user) {
 
 function hideModal() {
   document.getElementById("user-info-modal").style.display = "none";
+}
+
+
+
+function toggleLogFullscreen() {
+  const section = document.getElementById("logSection");
+  section.classList.toggle("fullscreen");
 }

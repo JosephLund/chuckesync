@@ -7,57 +7,61 @@
 
 {% block content %}
 <div id="admin-page" data-next-sync="{{ next_sync_epoch }}">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="admin-card">
+        <a href="{{ url_for('main.index') }}" class="back-link">← Back to Home</a>
 
-  <div class="admin-card">
-    <a href="{{ url_for('main.index') }}" class="back-link">← Back to Home</a>
+        <h1>Admin Panel</h1>
 
-    <h1>Admin Panel</h1>
+        <p><strong>Next sync in:</strong> <span id="sync-timer">Loading...</span></p>
 
-    <p><strong>Next sync in:</strong> <span id="sync-timer">Loading...</span></p>
+        {% for user in users %}
 
-    {% for user in users %}
+        {% set is_protected = user['email'] == protected_email %}
+        <div class="user-entry">
+          <div class="user-meta mb-2">
+            <strong>{{ user['email'] }}</strong>
+            {% if user['is_admin'] %}
+            <span class="badge bg-warning text-dark">Admin</span>
+            {% endif %}
+          </div>
+          <div class="user-actions d-flex flex-wrap gap-2">
+            <button class="btn btn-outline-info btn-sm" data-user='{{ user | tojson | safe }}'
+              onclick='showUserInfo(this.dataset.user)'>
+              Info
+            </button>
 
-    {% set is_protected = user['email'] == protected_email %}
-    <div class="user-entry">
-  <div class="user-meta mb-2">
-    <strong>{{ user['email'] }}</strong>
-    {% if user['is_admin'] %}
-      <span class="badge bg-warning text-dark">Admin</span>
-    {% endif %}
+            <form method="post" action="/clear_user/{{ user['email'] }}">
+              <button class="btn btn-outline-danger btn-sm">
+                Delete
+              </button>
+            </form>
+
+            <form method="post" action="/toggle_admin/{{ user['email'] }}">
+              <button class="btn btn-outline-warning btn-sm">
+                Toggle Admin
+              </button>
+            </form>
+            <form method="post" action="/sync_user_calendar/{{ user['email'] }}">
+              <button class="btn btn-outline-warning btn-sm">
+                Sync
+              </button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+    </div>
   </div>
-
-  {% if not is_protected %}
-  <div class="user-actions d-flex flex-wrap gap-2">
-    <button class="btn btn-outline-info btn-sm"
-            onclick='showUserInfo(JSON.parse(this.dataset.user))'>
-      Info
-    </button>
-
-    <form method="post" action="/clear_user/{{ user['email'] }}">
-      <button class="btn btn-outline-danger btn-sm">
-        Delete
-      </button>
-    </form>
-
-    <form method="post" action="/toggle_admin/{{ user['email'] }}">
-      <button class="btn btn-outline-warning btn-sm">
-        Toggle Admin
-      </button>
-    </form>
-     
-    {% endif %}
-    <form method="post" action="/sync_user_calendar/{{ user['email'] }}">
-      <button class="btn btn-outline-warning btn-sm">
-        Sync
-      </button>
-    </form>
-  </div>
-</div>
-    {% endfor %}
-  </div>
-
-  <div class="log-container">
+<div class="log-section-wrapper" id="logSection">
+  <div class="d-flex justify-content-between align-items-center mb-1">
     <strong>Server Logs:</strong>
+    <button class="btn btn-sm btn-outline-secondary" onclick="toggleLogFullscreen()">Toggle Fullscreen</button>
+  </div>
+
+  <div class="log-container" id="logContainer">
     <pre>{{ logs|safe }}</pre>
   </div>
 
