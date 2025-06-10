@@ -27,3 +27,34 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateTimer, 1000);
   updateTimer();
 });
+
+
+function showUserInfo(user) {
+  const modal = document.getElementById("user-info-modal");
+  const tableBody = document.getElementById("user-info-table");
+  const emailTitle = document.getElementById("modal-user-email");
+  const downloadBtn = document.getElementById("download-logs-btn");
+
+  emailTitle.textContent = user.email || "User Info";
+  tableBody.innerHTML = "";
+
+  for (const [key, value] of Object.entries(user)) {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <th style="text-transform: capitalize;">${key.replace(/_/g, " ")}</th>
+      <td>${value ?? "—"}</td>
+    `;
+
+    tableBody.appendChild(row);
+  }
+
+  // Update download URL with email
+  downloadBtn.href = `/download_logs/${encodeURIComponent(user.email)}`;
+
+  modal.style.display = "flex";
+}
+
+function hideModal() {
+  document.getElementById("user-info-modal").style.display = "none";
+}

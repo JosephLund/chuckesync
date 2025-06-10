@@ -2,11 +2,11 @@
 {% block title %}Admin Panel - Chuck E Sync{% endblock %}
 
 {% block extra_css %}
-  <link href="{{ url_for('static', filename='css/admin.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/admin.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div id="admin-page">
+<div id="admin-page" data-next-sync="{{ next_sync_epoch }}">
 
   <div class="admin-card">
     <a href="{{ url_for('main.index') }}" class="back-link">← Back to Home</a>
@@ -16,28 +16,43 @@
     <p><strong>Next sync in:</strong> <span id="sync-timer">Loading...</span></p>
 
     {% for user in users %}
+
+    {% set is_protected = user['email'] == protected_email %}
     <div class="user-entry">
-      <div class="user-email">
-        {{ user['email'] }}
-        {% if user['is_admin'] %}
-          <span class="badge bg-warning text-dark">Admin</span>
-        {% endif %}
-      </div>
-      <div class="user-actions">
-        <form method="post" action="/test_user/{{ user['email'] }}">
-          <button class="btn btn-outline-primary btn-sm" onclick="return confirm('Test sync for {{ user.email }}?')">Test Sync</button>
-        </form>
-        <form method="post" action="/clear_user/{{ user['email'] }}">
-          <button class="btn btn-outline-danger btn-sm" onclick="return confirm('Delete {{ user.user-email }} from the system?')">Delete</button>
-        </form>
-        <form method="post" action="/toggle_admin/{{ user['email'] }}">
-          <button class="btn btn-outline-warning btn-sm">Toggle Admin</button>
-        </form>
-        <form method="post" action="/sync_user_calendar/{{ user['email'] }}">
-          <button class="btn btn-outline-warning btn-sm">Sync</button>
-        </form>
-      </div>
-    </div>
+  <div class="user-meta mb-2">
+    <strong>{{ user['email'] }}</strong>
+    {% if user['is_admin'] %}
+      <span class="badge bg-warning text-dark">Admin</span>
+    {% endif %}
+  </div>
+
+  {% if not is_protected %}
+  <div class="user-actions d-flex flex-wrap gap-2">
+    <button class="btn btn-outline-info btn-sm"
+            onclick='showUserInfo(JSON.parse(this.dataset.user))'>
+      Info
+    </button>
+
+    <form method="post" action="/clear_user/{{ user['email'] }}">
+      <button class="btn btn-outline-danger btn-sm">
+        Delete
+      </button>
+    </form>
+
+    <form method="post" action="/toggle_admin/{{ user['email'] }}">
+      <button class="btn btn-outline-warning btn-sm">
+        Toggle Admin
+      </button>
+    </form>
+     
+    {% endif %}
+    <form method="post" action="/sync_user_calendar/{{ user['email'] }}">
+      <button class="btn btn-outline-warning btn-sm">
+        Sync
+      </button>
+    </form>
+  </div>
+</div>
     {% endfor %}
   </div>
 
@@ -54,19 +69,23 @@
 
 </div>
 
+<div id="user-info-modal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close" onclick="hideModal()">&times;</span>
+    <h2 id="modal-user-email" class="mb-3"></h2>
+
+    <table class="table table-striped">
+      <tbody id="user-info-table"></tbody>
+    </table>
+
+    <div class="d-flex justify-content-end">
+      <a id="download-logs-btn" class="btn btn-sm btn-outline-secondary" href="#" download>
+        Download Logs
+      </a>
+    </div>
+  </div>
+</div>
 {% block extra_js %}
-<script>
-  // eslint-disable-next-line
-  const syncEpoch = Number('{{ next_sync_epoch }}');
-  function updateTimer() {
-    const now = Math.floor(Date.now() / 1000);
-    const remaining = Math.max(syncEpoch - now, 0);
-    const minutes = Math.floor(remaining / 60);
-    const seconds = remaining % 60;
-    document.getElementById('sync-timer').textContent = `${minutes}m ${seconds}s`;
-  }
-  setInterval(updateTimer, 1000);
-  updateTimer();
-</script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
 {% endblock %}
 {% endblock %}

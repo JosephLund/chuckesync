@@ -31,7 +31,19 @@
     © 2025 Chuck E Sync. All rights reserved.
     <a href="{{ url_for('main.privacy') }}">Privacy Policy</a>
   </footer>
-
+{% if not session.get('cookie_consent') %}
+<div id="cookie-banner" class="bg-light border-top py-3 shadow-sm">
+  <div class="container d-flex justify-content-between align-items-center flex-wrap">
+    <span class="me-3 mb-2 mb-md-0 text-muted">
+      This site uses cookies to keep you logged in. Do you accept?
+    </span>
+    <form method="post" action="{{ url_for('main.accept_cookies') }}">
+      <button class="btn btn-success btn-sm">Accept Cookies</button>
+    </form>
+  </div>
+</div>
+{% endif %}
+  
   {% block extra_js %}{% endblock %}
 </body>
 </html>
