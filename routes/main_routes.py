@@ -2,6 +2,7 @@ from flask import Blueprint, current_app, render_template, session, redirect, ur
 from flask_sqlalchemy import SQLAlchemy
 import backend
 from models import User, db
+from logger import get_logs
 
 main_bp = Blueprint('main', __name__)
 
@@ -21,7 +22,7 @@ def privacy():
 
 @main_bp.route('/admin')
 def admin():
-    logs = ""
+    logs = get_logs()
     next_sync_epoch = 1721234567
     users = [u.to_dict() for u in User.all_users()]
     protected_email = current_app.config["PROTECTED_ADMIN_EMAIL"]
