@@ -82,3 +82,21 @@
   max-width: 1600px; /* <-- keep your nice wide pill */
   margin: 0 auto;
 }
+
+@media (max-width: 768px) {
+  .calendar-container {
+    max-width: 100% !important;
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
+
+  .dashboard-header .header-container {
+    font-size: 1.4rem;
+    max-width: 100%;
+    border-radius: 0;
+  }
+
+    .hamburger-btn {
+    font-size: 1.6rem;
+  }
+}
