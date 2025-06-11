@@ -7,11 +7,22 @@
 {% endblock %}
 
 {% block content %}
+
+<!-- Global Header -->
+<div id="dashboard-header" class="dashboard-header">
+  <div class="header-container">
+    <button id="menu-toggle" class="hamburger-btn">☰</button>
+    <h1>My Shifts</h1>
+  </div>
+</div>
+
+
 <div id="dashboard-page" class="dashboard-layout">
 
-  <!-- Sidebar (hidden by default) -->
+  <!-- Sidebar -->
   <div id="sidebar" class="dashboard-sidebar">
     <h3>Settings</h3>
+
     <form method="post" action="/clear_user/{{ session.get('user_email') }}"
           onsubmit="return confirm('Are you sure you want to remove yourself from Chuck E Sync?');">
       <button class="btn btn-danger w-100 mb-2">Remove Me</button>
@@ -33,11 +44,6 @@
 
   <!-- Main Content -->
   <div class="dashboard-content">
-    <section class="dashboard-header">
-      <button id="menu-toggle" class="hamburger-btn">☰</button>
-      <h1>My Shifts</h1>
-    </section>
-
     <div class="calendar-container">
       <div class="store-filter mb-3">
         <label for="storeSelect">Filter by Store:</label>
@@ -48,8 +54,10 @@
       <div id="calendar"></div>
     </div>
   </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8"></script>
 <script src="{{ url_for('static', filename='js/dashboard.js') }}?v={{ config.VERSION }}"></script>
+
 {% endblock %}

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
       week: 'Week',
       day: 'Day'
     },
-    aspectRatio: 1.8,
+    aspectRatio: 2.6,
     expandRows: true,
   });
 
@@ -31,8 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Sidebar hamburger menu toggle
   document.getElementById('menu-toggle').addEventListener('click', () => {
-    document.getElementById('sidebar').classList.toggle('open');
-  });
+  document.getElementById('sidebar').classList.toggle('open');
+});
+
 });
 
 async function loadStores() {
