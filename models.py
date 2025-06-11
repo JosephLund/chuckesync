@@ -4,6 +4,18 @@ import uuid
 
 db = SQLAlchemy()
 
+class Store(db.Model):
+    __tablename__ = "stores"
+    id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.String, unique=True)
+    name = db.Column(db.String)
+    
+
+class UserStore(db.Model):
+    __tablename__ = "user_stores"
+    user_email = db.Column(db.String, db.ForeignKey('users.email'), primary_key=True)
+    store_id = db.Column(db.Integer, db.ForeignKey('stores.id'), primary_key=True)
+
 class User(db.Model):
     __tablename__ = "users"
     email = db.Column(db.String, primary_key=True)
@@ -16,6 +28,7 @@ class User(db.Model):
     timezone = db.Column(db.String)
     last_schedule_email_at = db.Column(db.DateTime)
     calendar_token = db.Column(db.String, default=lambda: str(uuid.uuid4()))
+    location_tracking_enabled = db.Column(db.Boolean, default=True)
 
     def to_dict(self):
         return {
@@ -28,7 +41,8 @@ class User(db.Model):
             "last_login_lon": self.last_login_lon,
             "timezone": self.timezone,
             "last_schedule_email_at": self.last_schedule_email_at.isoformat() if self.last_schedule_email_at else None,
-            "calendar_token": self.calendar_token
+            "calendar_token": self.calendar_token,
+            "location_tracking_enabled": self.location_tracking_enabled
         }
 
     @staticmethod

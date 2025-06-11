@@ -55,41 +55,62 @@
 
     </div>
   </div>
-<div class="log-section-wrapper" id="logSection">
-  <div class="d-flex justify-content-between align-items-center mb-1">
-    <strong>Server Logs:</strong>
-    <button class="btn btn-sm btn-outline-secondary" onclick="toggleLogFullscreen()">Toggle Fullscreen</button>
+  <div class="log-section-wrapper" id="logSection">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+      <strong>Server Logs:</strong>
+      <button id="terminal-toggle" type="button" class="btn btn-secondary btn-sm">
+        ⤢ Toggle Fullscreen
+      </button>
+    </div>
+
+    <div class="log-container" id="logContainer">
+      <div class="log-list">
+        {% for log in logs %}
+        <div class="log-entry log-{{ log.level | lower }}">
+          <div class="log-meta">
+            <strong>{{ log.level }}</strong>
+            <span class="timestamp">{{ log.timestamp | logtime(user_timezones.get(log.user, "UTC")) }}</span>
+            {% if log.user %}<span class="log-user">{{ log.user }}</span>{% endif %}
+          </div>
+          <div class="log-message">{{ log.message }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="terminal-output">
+      {% for message in messages %}
+      <div class="terminal-line">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <form class="command-bar" method="post" action="/exec_command">
+      <input name="command" type="text" placeholder="Enter a command..." required>
+      <button type="submit" class="btn btn-success">Run</button>
+    </form>
+
   </div>
 
-  <div class="log-container" id="logContainer">
-    <pre>{{ logs|safe }}</pre>
-  </div>
+  <div id="user-info-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="hideModal()">&times;</span>
+      <h2 id="modal-user-email" class="mb-3"></h2>
 
-  <form class="command-bar" method="post">
-    <input name="command" type="text" placeholder="Enter a Python or SQL command..." required>
-    <button type="submit" class="btn btn-success" formaction="/exec_command">Run Python</button>
-    <button type="submit" class="btn btn-warning" formaction="/run_sql">Run SQL</button>
-  </form>
+      <table class="table table-striped">
+        <tbody id="user-info-table"></tbody>
+      </table>
 
-</div>
-
-<div id="user-info-modal" class="modal" style="display: none;">
-  <div class="modal-content">
-    <span class="close" onclick="hideModal()">&times;</span>
-    <h2 id="modal-user-email" class="mb-3"></h2>
-
-    <table class="table table-striped">
-      <tbody id="user-info-table"></tbody>
-    </table>
-
-    <div class="d-flex justify-content-end">
-      <a id="download-logs-btn" class="btn btn-sm btn-outline-secondary" href="#" download>
-        Download Logs
-      </a>
+      <div class="d-flex justify-content-end">
+        <a id="download-logs-btn" class="btn btn-sm btn-outline-secondary" href="#" download>
+          Download Logs
+        </a>
+      </div>
     </div>
   </div>
-</div>
-{% block extra_js %}
-<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
-{% endblock %}
-{% endblock %}
+  {% block extra_js %}
+  {% endblock %}
+  
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+  {% endblock %}

@@ -1,3 +1,4 @@
+/* Layout */
 #admin-page {
   flex: 1;
   display: flex;
@@ -32,6 +33,7 @@
   text-decoration: underline;
 }
 
+/* User list */
 .user-entry {
   display: flex;
   flex-direction: column;
@@ -50,7 +52,6 @@
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
-
 
 .user-meta .badge {
   margin-left: 0.5rem;
@@ -73,6 +74,7 @@
   font-size: 0.9rem;
 }
 
+/* Log section */
 .log-section-wrapper {
   margin-top: auto;
   background: #000;
@@ -88,25 +90,6 @@
   padding: 1rem;
 }
 
-.command-bar {
-  background: #111;
-  padding: 0.75rem;
-  display: flex;
-  gap: 0.5rem;
-  border-top: 1px solid #333;
-}
-
-.command-bar input {
-  flex: 1;
-  padding: 0.5rem;
-  font-family: monospace;
-  font-size: 1rem;
-  background-color: #222;
-  color: #0f0;
-  border: 1px solid #444;
-}
-
-/* Fullscreen styles */
 .log-section-wrapper.fullscreen {
   position: fixed;
   top: 0;
@@ -128,6 +111,7 @@
   border-top: 1px solid #333;
 }
 
+/* Command bar */
 .command-bar {
   background: #111;
   padding: 0.75rem;
@@ -146,6 +130,60 @@
   border: 1px solid #444;
 }
 
+/* Terminal output */
+.terminal-output {
+  background: #111;
+  color: #0f0;
+  font-family: monospace;
+  padding: 0.5rem 1rem;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+.terminal-line {
+  margin-bottom: 0.25rem;
+}
+
+/* Logs formatting */
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: monospace;
+  font-size: 0.95rem;
+}
+
+.log-entry {
+  padding: 0.75rem;
+  border: 1px solid #444;
+  border-left: 6px solid #888;
+  background: #111;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.log-entry .log-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.log-entry .log-user {
+  font-style: italic;
+  color: #ccc;
+}
+
+.log-entry .log-message {
+  color: #f8f8f8;
+}
+
+.log-info { border-left-color: #0af; }
+.log-warning { border-left-color: #fa0; }
+.log-error { border-left-color: #f33; }
+
+/* Modal styling */
 .modal {
   position: fixed;
   top: 0;
@@ -176,4 +214,31 @@
   top: 1rem;
   cursor: pointer;
   font-size: 1.5rem;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .log-entry {
+    font-size: 0.85rem;
+  }
+
+  .log-entry .log-meta {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 1rem;
+  }
+}
+
+/* Scrollbar styling */
+.log-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.log-container::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
 }

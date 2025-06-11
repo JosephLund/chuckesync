@@ -2,7 +2,7 @@
 {% block title %}Dashboard - Chuck E Sync{% endblock %}
 
 {% block extra_css %}
-  <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -14,10 +14,18 @@
   </section>
 
   <section class="main-content">
-    <div class="button-group">  
-      <form method="post" action="/clear_user/{{ session.get('user_email') }}" 
-            onsubmit="return confirm('Are you sure you want to remove yourself from Chuck E Sync?');">
+    <div class="button-group">
+      <form method="post" action="/clear_user/{{ session.get('user_email') }}"
+        onsubmit="return confirm('Are you sure you want to remove yourself from Chuck E Sync?');">
         <button class="btn btn-danger">Remove Me from Sync</button>
+      </form>
+      <form method="POST" action="{{ url_for('main.toggle_location_tracking') }}">
+        <label>
+          <input type="checkbox" name="location_tracking_enabled" {% if user.location_tracking_enabled %}checked{% endif
+            %}>
+          Enable location-based analytics
+        </label>
+        <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
       </form>
 
       {% if session.get('is_admin') %}

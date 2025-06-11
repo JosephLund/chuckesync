@@ -1,8 +1,9 @@
 import json
-from flask import Blueprint, current_app, session, redirect, url_for, request, Response
+from flask import Blueprint, current_app, flash, session, redirect, url_for, request, Response
 from flask_sqlalchemy import SQLAlchemy
-import backend
+from commands import COMMANDS
 from models import User, db
+from logger import log_event
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -65,7 +66,6 @@ def delete_test_users():
         "test2@example.com",
         "test3@example.com"
     ]
-
     for email in dummy_emails:
         user = User.get_user(email)
         if user:
@@ -73,3 +73,25 @@ def delete_test_users():
 
     db.session.commit()
     return "Test users deleted!"
+
+
+@admin_bp.route("/exec_command", methods=["POST"])
+def exec_command():
+    command_input = request.form.get("command", "").strip()
+    if not command_input:
+        flash("No command entered.")
+        return redirect(url_for("main.admin"))
+
+    parts = command_input.split()
+    cmd, args = parts[0], parts[1:]
+
+    handler = COMMANDS.get(cmd)
+    if handler:
+        try:
+            handler(args) if args else handler()
+        except Exception as e:
+            flash(f"Error: {e}")
+    else:
+        flash(f"Unknown command: {cmd}. Type 'help' for a list.")
+
+    return redirect(url_for("main.admin"))
