@@ -4,6 +4,24 @@ import uuid
 
 db = SQLAlchemy()
 
+
+class Shift(db.Model):
+    __tablename__ = "shifts"
+    id = db.Column(db.Integer, primary_key=True)
+    user_email = db.Column(db.String, db.ForeignKey('users.email'))
+    store_id = db.Column(db.Integer, db.ForeignKey('stores.id'))
+    date = db.Column(db.Date)
+    start_time = db.Column(db.Time)
+    end_time = db.Column(db.Time)
+
+    user = db.relationship('User', backref='shifts')
+    store = db.relationship('Store', backref='shifts')
+
+    __table_args__ = (
+        db.UniqueConstraint('user_email', 'store_id', 'date', 'start_time', name='unique_shift'),
+    )
+
+
 class Store(db.Model):
     __tablename__ = "stores"
     id = db.Column(db.Integer, primary_key=True)

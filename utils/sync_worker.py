@@ -4,7 +4,7 @@ import threading
 import time
 import pickle
 import base64
-from models import get_db, User, Store, UserStore, db
+from models import get_db, User, Store, UserStore, Shift, db
 from googleapiclient.discovery import build
 from utils.schedule_parser import parse_schedule
 from logger import log_event
@@ -29,11 +29,9 @@ def background_sync_users():
                 creds = pickle.loads(user['token'])
 
                 try:
-                    # Set up Gmail and Calendar API clients
                     gmail = build('gmail', 'v1', credentials=creds)
                     calendar = build('calendar', 'v3', credentials=creds)
 
-                    # Look for the most recent PDF schedule email
                     messages = gmail.users().messages().list(
                         userId='me',
                         q="from:nbo-noreply@alohaenterprise.com filename:pdf",
@@ -49,7 +47,6 @@ def background_sync_users():
                         log_event(f"No new schedule for {email}. Skipping.", user=email, level="info")
                         continue
 
-                    # Fetch the email message
                     msg = gmail.users().messages().get(userId='me', id=latest_msg_id).execute()
 
                     parts = msg['payload'].get('parts', [])
@@ -59,7 +56,6 @@ def background_sync_users():
                             body = part.get('body', {})
                             data = body.get('data')
 
-                            # If it's an attachment, fetch it explicitly
                             if not data and 'attachmentId' in body:
                                 attachment = gmail.users().messages().attachments().get(
                                     userId='me', messageId=msg['id'], id=body['attachmentId']
@@ -69,19 +65,17 @@ def background_sync_users():
                             if not data:
                                 continue
 
-                            # Save the PDF locally
                             decoded = base64.urlsafe_b64decode(data.encode('utf-8'))
                             pdf_path = os.path.join('uploads', f"{email.replace('@', '_')}_latest.pdf")
                             with open(pdf_path, 'wb') as f:
                                 f.write(decoded)
 
-                            # Parse shifts and store info from the PDF
                             shifts, store_list = parse_schedule(pdf_path)
 
-                            # Lookup SQLAlchemy user object
                             user_obj = User.get_user(email)
 
-                            # Link stores to the user
+                            # Store linking
+                            store_id_map = {}
                             for number, name in store_list:
                                 store = Store.query.filter_by(number=number).first()
                                 if not store:
@@ -89,18 +83,60 @@ def background_sync_users():
                                     db.session.add(store)
                                     db.session.commit()
 
+                                store_id_map[number] = store.id
+
                                 if not UserStore.query.filter_by(user_email=user_obj.email, store_id=store.id).first():
                                     link = UserStore(user_email=user_obj.email, store_id=store.id)
                                     db.session.add(link)
-
                             db.session.commit()
 
-                            # Create calendar events
+                            # Shift insertion & calendar sync
                             for date_str, start, end in shifts:
                                 try:
+                                    shift_date = datetime.strptime(date_str, "%m/%d/%Y").date()
                                     start_dt = datetime.strptime(f"{date_str} {start}", "%m/%d/%Y %H:%M")
                                     end_dt = datetime.strptime(f"{date_str} {end}", "%m/%d/%Y %H:%M")
 
+                                    # For now, assume first store if multiple (can improve later)
+                                    store_id = list(store_id_map.values())[0]
+
+                                    # Check for duplicate shift
+                                    existing_shift = Shift.query.filter_by(
+                                        user_email=email,
+                                        store_id=store_id,
+                                        date=shift_date,
+                                        start_time=start_dt.time()
+                                    ).first()
+
+                                    if existing_shift:
+                                        log_event(f"Shift already exists for {email} on {shift_date}", user=email, level="info")
+                                        continue
+
+                                    # Save shift to DB
+                                    new_shift = Shift(
+                                        user_email=email,
+                                        store_id=store_id,
+                                        date=shift_date,
+                                        start_time=start_dt.time(),
+                                        end_time=end_dt.time()
+                                    )
+                                    db.session.add(new_shift)
+                                    db.session.commit()
+
+                                    # Calendar duplicate check
+                                    existing_events = calendar.events().list(
+                                        calendarId='primary',
+                                        timeMin=start_dt.isoformat(),
+                                        timeMax=end_dt.isoformat(),
+                                        q='Chuck E. Cheese Shift',
+                                        singleEvents=True
+                                    ).execute()
+
+                                    if existing_events.get('items'):
+                                        log_event(f"Event already exists in calendar for {start_dt} - skipping.", user=email, level="info")
+                                        continue
+
+                                    # Insert into calendar
                                     event = {
                                         'summary': 'Chuck E. Cheese Shift',
                                         'start': {
@@ -112,13 +148,13 @@ def background_sync_users():
                                             'timeZone': 'America/Los_Angeles'
                                         }
                                     }
-
-                                    # calendar.events().insert(calendarId='primary', body=event).execute()
+                                    calendar.events().insert(calendarId='primary', body=event).execute()
                                     log_event(f"Event added: {start_dt} to {end_dt}", user=email, level="info")
+
                                 except Exception as calendar_error:
                                     log_event(f"Event insert failed: {calendar_error}", user=email, level="error")
 
-                            # Mark the latest synced email ID
+                            # Mark email synced
                             conn.execute("UPDATE users SET last_synced_id = ? WHERE email = ?", (latest_msg_id, email))
                             conn.commit()
                             log_event("Events added to calendar", user=email, level="info")
@@ -127,7 +163,7 @@ def background_sync_users():
                 except Exception as e:
                     log_event(f"Failed sync: {e}", user=email, level="error")
 
-            time.sleep(1800)  # Wait 30 minutes before next sync cycle
+            time.sleep(1800)
 
     thread = threading.Thread(target=sync_loop, daemon=True)
     thread.start()

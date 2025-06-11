@@ -3,36 +3,53 @@
 
 {% block extra_css %}
 <link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<div id="dashboard-page">
+<div id="dashboard-page" class="dashboard-layout">
 
-  <section class="hero">
-    <h1>You're all set!</h1>
-    <p>Your shifts will now sync automatically with Google Calendar.</p>
-  </section>
+  <!-- Sidebar (hidden by default) -->
+  <div id="sidebar" class="dashboard-sidebar">
+    <h3>Settings</h3>
+    <form method="post" action="/clear_user/{{ session.get('user_email') }}"
+          onsubmit="return confirm('Are you sure you want to remove yourself from Chuck E Sync?');">
+      <button class="btn btn-danger w-100 mb-2">Remove Me</button>
+    </form>
 
-  <section class="main-content">
-    <div class="button-group">
-      <form method="post" action="/clear_user/{{ session.get('user_email') }}"
-        onsubmit="return confirm('Are you sure you want to remove yourself from Chuck E Sync?');">
-        <button class="btn btn-danger">Remove Me from Sync</button>
-      </form>
-      <form method="POST" action="{{ url_for('main.toggle_location_tracking') }}">
-        <label>
-          <input type="checkbox" name="location_tracking_enabled" {% if user.location_tracking_enabled %}checked{% endif
-            %}>
-          Enable location-based analytics
-        </label>
-        <button type="submit" class="btn btn-sm btn-outline-primary">Save</button>
-      </form>
+    <form method="POST" action="{{ url_for('main.toggle_location_tracking') }}">
+      <label class="form-check-label d-block mb-2">
+        <input type="checkbox" name="location_tracking_enabled"
+          {% if user.location_tracking_enabled %}checked{% endif %}>
+        Enable location-based analytics
+      </label>
+      <button type="submit" class="btn btn-sm btn-outline-primary w-100">Save</button>
+    </form>
 
-      {% if session.get('is_admin') %}
-      <a class="btn btn-outline-dark" href="/admin">Go to Admin Panel</a>
-      {% endif %}
+    {% if session.get('is_admin') %}
+    <a class="btn btn-outline-dark w-100 mt-3" href="/admin">Admin Panel</a>
+    {% endif %}
+  </div>
+
+  <!-- Main Content -->
+  <div class="dashboard-content">
+    <section class="dashboard-header">
+      <button id="menu-toggle" class="hamburger-btn">☰</button>
+      <h1>My Shifts</h1>
+    </section>
+
+    <div class="calendar-container">
+      <div class="store-filter mb-3">
+        <label for="storeSelect">Filter by Store:</label>
+        <select id="storeSelect">
+          <option value="">All Stores</option>
+        </select>
+      </div>
+      <div id="calendar"></div>
     </div>
-  </section>
-
+  </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}?v={{ config.VERSION }}"></script>
 {% endblock %}

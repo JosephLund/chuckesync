@@ -2,39 +2,70 @@
   font-family: 'Open Sans', sans-serif;
   background: #fff3f8;
   margin: 0;
-}
-
-#dashboard-page .hero {
-  background: linear-gradient(to bottom right, #6c2d91, #8d3dbf);
-  color: white;
-  text-align: center;
-  padding: 4rem 2rem;
-}
-
-#dashboard-page .hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-#dashboard-page .main-content {
-  text-align: center;
-  padding: 3rem 2rem;
-}
-
-#dashboard-page .button-group {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  height: 100vh;
+  overflow: hidden;
+}
+:root {
+  --navbar-height: 174px;
+}
+/* Sidebar Styling */
+.dashboard-sidebar {
+  position: fixed;
+  top: var(--navbar-height);
+  left: -250px;
+  width: 250px;
+  height: calc(100% - var(--navbar-height));
+  background: #f8f9fa;
+  padding: 2rem 1rem;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: left 0.3s ease;
+  z-index: 999;
+}
+
+.dashboard-sidebar.open {
+  left: 0;
+}
+
+/* Main Content */
+.dashboard-content {
+  flex-grow: 1;
+  padding: 0 2rem 2rem 2rem; /* top 0, keep left/right/bottom padding */
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-header {
+  background: linear-gradient(45deg, #6c2d91, #8d3dbf);
+  padding: 1.5rem 2rem;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 600;
+  border-radius: 1rem;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* <-- align to left */
   gap: 1rem;
 }
 
-#dashboard-page .button-group form,
-#dashboard-page .button-group a {
-  display: inline-block;
+/* Hamburger button */
+.hamburger-btn {
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0;
 }
 
-#dashboard-page .button-group .btn {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 8px;
+/* Calendar Container Styling */
+.calendar-container {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 1100px;
+  margin: 0 auto;
 }

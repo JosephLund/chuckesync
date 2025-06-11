@@ -4,6 +4,7 @@ from flask import Flask, logging
 from routes.main_routes import main_bp
 from routes.auth_routes import auth_bp
 from routes.admin_routes import admin_bp
+from routes.shifts_routes import shifts_bp
 from models import db 
 from datetime import datetime
 
@@ -20,6 +21,7 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(shifts_bp)
 
     
     @app.template_filter("logtime")
