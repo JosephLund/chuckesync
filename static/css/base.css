@@ -7,13 +7,14 @@ html, body {
   background: #fff3f8;
 }
 
-.layout {
+body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
-header {
+.site-header {
   flex-shrink: 0;
   background-color: #ec1c24;
   color: white;
@@ -21,21 +22,25 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 60px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-#main-content {
-  flex: 1 0 auto;
+#content-wrapper {
+  flex: 1 1 auto;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
-footer {
+.site-footer {
   flex-shrink: 0;
   background-color: #f1f1f1;
   padding: 1rem;
   text-align: center;
   font-size: 0.9rem;
   color: #666;
+  box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
 }
 
 .logo-text {
@@ -46,4 +51,9 @@ footer {
 .btn-primary {
   background-color: #ec1c24;
   border-color: #ec1c24;
+}
+
+/* Hide calendar headers globally by default */
+.hidden-header {
+  display: none;
 }
