@@ -8,47 +8,42 @@
 {% block content %}
 <div id="dashboard-wrapper">
 
-  <!-- Mobile weekdays header -->
-  <div class="mobile-weekdays-header-wrapper">
-    <div class="mobile-weekdays-grid">
-      {% for day in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] %}
-      <div class="mobile-weekday">{{ day }}</div>
-      {% endfor %}
-    </div>
-  </div>
+  <!-- Optional calendar title -->
+  <div class="calendar-header">My Shifts</div>
+
 
   <!-- Calendar Body -->
-  <div class="calendar-body">
-    <div>
-      <!-- Synchronized Scroll Container -->
-      <div class="calendar-scroll-wrapper">
+<div class="calendar-body">
+  <div class="calendar-centered-container">
+    <div class="calendar-scroll-wrapper">
 
-        <!-- Time Column -->
-        <div class="time-column">
-          {% for hour in range(6, 24) %}
-          <div class="time-slot">{{ '%02d:00' % hour }}</div>
+      <!-- Time Column -->
+      <div class="time-column">
+        <div class="time-slot"></div> <!-- empty top cell for alignment -->
+        {% for hour in range(6, 24) %}
+        <div class="time-slot">{{ '%02d:00' % hour }}</div>
+        {% endfor %}
+      </div>
+
+      <!-- Week Grid -->
+      <div class="week-grid-wrapper">
+        <div class="week-grid">
+          {% for day in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] %}
+          <div class="day-column">
+            <div class="day-label-top">{{ day }}</div> <!-- Always visible top label -->
+            <div class="day-slots">
+              {% for hour in range(6, 24) %}
+              <div class="hour-slot"></div>
+              {% endfor %}
+            </div>
+          </div>
           {% endfor %}
         </div>
-
-        <!-- Week Grid -->
-        <div class="week-grid-wrapper">
-          <div class="week-grid">
-            {% for day in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] %}
-            <div class="day-column">
-              <div class="day-label-mobile">{{ day }}</div>
-              <div class="day-slots">
-                {% for hour in range(6, 24) %}
-                <div class="hour-slot"></div>
-                {% endfor %}
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-
       </div>
+
     </div>
   </div>
+</div>
 
 </div>
 

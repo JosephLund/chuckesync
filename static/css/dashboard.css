@@ -169,6 +169,16 @@
   }
 }
 
+.day-label-top {
+  background: #6c2d91;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  padding: 0.6rem 0.5rem;
+  font-size: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
 /* Hide mobile weekdays header on desktop */
 .mobile-weekdays-header-wrapper {
   display: none;
@@ -188,7 +198,13 @@
   display: flex;
   overflow-x: auto;
   width: 100%;
-  justify-content: flex-start; /* default behavior */
+  justify-content: center; /* default behavior */
+}
+.calendar-centered-container {
+  margin: 0 auto;
+  max-width: 1400px;
+  width: 100%;
+  padding: 0 1rem;
 }
 
 

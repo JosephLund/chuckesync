@@ -29,26 +29,6 @@
 
   <!-- Global Content Area -->
   <div id="content-wrapper">
-    
-    <!-- Global Calendar Headers (hidden by default) -->
-    <div id="dashboard-top-header" class="hidden-header">
-
-      <!-- Purple Header -->
-      <div class="calendar-header">
-        <h1>My Shifts</h1>
-      </div>
-
-      <!-- Weekdays Header -->
-      <div class="weekdays-header">
-        <div class="time-spacer"></div>
-        <div class="weekdays-grid">
-          {% for day in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] %}
-          <div class="weekday">{{ day }}</div>
-          {% endfor %}
-        </div>
-      </div>
-
-    </div>
 
     {% block content %}{% endblock %}
   </div>
